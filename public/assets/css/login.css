@@ -1,0 +1,42 @@
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    
+    /* Gunakan background image */
+    background-image: url('../img/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* Tambahkan overlay gelap agar text terlihat */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);  /* Overlay hitam 50% */
+    z-index: 0;
+}
+
+.login-container {
+    position: relative;
+    z-index: 1;  /* Agar login box di atas overlay */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 440px;
+    padding: 50px 40px;
+}
