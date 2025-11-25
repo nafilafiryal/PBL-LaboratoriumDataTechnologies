@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        /* Overlay untuk membuat background lebih gelap */
+        
         body::before {
             content: '';
             position: absolute;
@@ -39,7 +39,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(44, 73, 100, 0.6);
+            background: rgba(0, 9, 16, 0.7);
             z-index: 0;
         }
 
