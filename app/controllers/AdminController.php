@@ -350,4 +350,57 @@ public function index() {
             exit;
         }
     }
+
+    // ==========================================================
+    // MODULE: MATA KULIAH
+    // ==========================================================
+    public function matakuliah() {
+        $data['title'] = 'Manajemen Mata Kuliah';
+        $data['matkul'] = $this->model('MatkulModel')->getAllMatkul();
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/matakuliah/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function tambahMatkul() {
+        $data['title'] = 'Tambah Mata Kuliah';
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/matakuliah/create', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function simpanMatkul() {
+        if ($this->model('MatkulModel')->tambahMatkul($_POST)) {
+            Session::setFlash('success', 'Mata kuliah berhasil ditambahkan!');
+            header('Location: ' . BASE_URL . 'admin/matakuliah');
+            exit;
+        }
+    }
+
+    public function editMatkul($id) {
+        $data['title'] = 'Edit Mata Kuliah';
+        $data['mk'] = $this->model('MatkulModel')->getMatkulById($id);
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/matakuliah/edit', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updateMatkul() {
+        if ($this->model('MatkulModel')->updateMatkul($_POST)) {
+            Session::setFlash('success', 'Mata kuliah berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/matakuliah');
+            exit;
+        }
+    }
+
+    public function hapusMatkul($id) {
+        if ($this->model('MatkulModel')->hapusMatkul($id)) {
+            Session::setFlash('success', 'Mata kuliah berhasil dihapus!');
+            header('Location: ' . BASE_URL . 'admin/matakuliah');
+            exit;
+        }
+    }
 }
