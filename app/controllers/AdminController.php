@@ -416,7 +416,7 @@ public function index() {
     // MODULE: MATA KULIAH
     // ==========================================================
     public function matakuliah() {
-        $data['title'] = 'Manajemen Mata Kuliah';
+        $data['title'] = 'Mata Kuliah Terkait';
         $data['matkul'] = $this->model('MatkulModel')->getAllMatkul();
         
         $this->view('admin/template/header', $data);
@@ -425,7 +425,7 @@ public function index() {
     }
 
     public function tambahMatkul() {
-        $data['title'] = 'Tambah Mata Kuliah';
+        $data['title'] = 'Tambah Mata Kuliah Terkait';
         
         $this->view('admin/template/header', $data);
         $this->view('admin/matakuliah/create', $data);
@@ -441,7 +441,7 @@ public function index() {
     }
 
     public function editMatkul($id) {
-        $data['title'] = 'Edit Mata Kuliah';
+        $data['title'] = 'Edit Mata Kuliah Terkait';
         $data['mk'] = $this->model('MatkulModel')->getMatkulById($id);
         
         $this->view('admin/template/header', $data);

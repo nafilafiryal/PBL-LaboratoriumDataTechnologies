@@ -1,12 +1,12 @@
 <div class="container mt-4">
     <div class="card">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Tambah Mata Kuliah</h4>
+            <h4 class="mb-0">Tambah Mata Kuliah Terkait</h4>
         </div>
         <div class="card-body mt-3">
             <form action="<?= BASE_URL; ?>admin/simpanMatkul" method="POST">
                 <div class="mb-3">
-                    <label class="form-label">Nama Mata Kuliah</label>
+                    <label class="form-label">Mata Kuliah Terkait</label> 
                     <input type="text" class="form-control" name="nama_matkul" placeholder="Contoh: Pemrograman Web Lanjut" required>
                 </div>
                 

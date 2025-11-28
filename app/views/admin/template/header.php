@@ -294,8 +294,7 @@
         <li class="nav-item">
             <a class="nav-link <?= (isset($data['title']) && strpos($data['title'], 'Mata Kuliah') !== false) ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin/matakuliah">
                 <i class="bi bi-book"></i>
-                <span>Mata Kuliah</span>
-            </a>
+                <span>Mata Kuliah Terkait</span> </a>
         </li>
 
         <li class="nav-item">
