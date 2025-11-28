@@ -30,6 +30,14 @@
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
+                    
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>admin/changePassword">
+                            <i class="bi bi-key"></i>
+                            <span>Change Password</span>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>auth/logout">
                             <i class="bi bi-box-arrow-right"></i>
@@ -45,7 +53,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link <?= ($page ?? '') === 'dashboard' ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin">
+            <a class="nav-link <?= ($data['title'] ?? '') === 'Dashboard Admin' ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
@@ -81,6 +89,12 @@
 
         <li class="nav-heading">Settings</li>
 
+        <li class="nav-item">
+            <a class="nav-link <?= ($data['title'] ?? '') === 'Ganti Password' ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin/changePassword">
+                <i class="bi bi-key"></i>
+                <span>Change Password</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="<?= BASE_URL ?>auth/logout">
                 <i class="bi bi-box-arrow-right"></i>
