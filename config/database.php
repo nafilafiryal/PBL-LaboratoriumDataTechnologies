@@ -1,20 +1,5 @@
 <?php
-// Konfigurasi database (jika diperlukan di masa depan)
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'lab_data_teknologi');
-
-// Koneksi database (optional, bisa diaktifkan nanti)
-/*
-try {
-    $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-        DB_USER,
-        DB_PASS
-    );
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    die("Koneksi database gagal: " . $e->getMessage());
-}
-*/
+define('DB_USER', 'postgres'); // Default user Postgres biasanya 'postgres'
+define('DB_PASS', '12345678');
+define('DB_NAME', 'lab_data_teknologi'); // Pastikan database ini sudah dibuat di pgAdmin

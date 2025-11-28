@@ -1,7 +1,7 @@
 <?php
 
 class ProfilModel {
-    private $table = 'profil';
+    private $table = 'lab_profiles';
     private $db;
 
     public function __construct() {
@@ -9,22 +9,23 @@ class ProfilModel {
     }
 
     public function getProfil() {
-        $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id_profil = 1');
-        return $this->db->single();
+        $sql = "SELECT * FROM " . $this->table . " WHERE id = 1";
+        $result = Database::query($sql);
+        return Database::fetchAssoc($result);
     }
 
     public function updateProfil($data) {
+        $profil = Database::escape($data['profil']);
+        $visi   = Database::escape($data['visi']);
+        $misi   = Database::escape($data['misi']);
+
         $query = "UPDATE " . $this->table . " SET 
-                  sejarah = :sejarah, 
-                  visi = :visi, 
-                  misi = :misi 
-                  WHERE id_profil = 1";
+                  profil = '$profil', 
+                  visi = '$visi', 
+                  misi = '$misi',
+                  updated_at = NOW()
+                  WHERE id = 1";
         
-        $this->db->query($query);
-        $this->db->bind(':sejarah', $data['sejarah']);
-        $this->db->bind(':visi', $data['visi']);
-        $this->db->bind(':misi', $data['misi']);
-        
-        return $this->db->execute();
+        return Database::query($query);
     }
 }

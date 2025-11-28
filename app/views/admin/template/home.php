@@ -25,13 +25,12 @@
         <div class="col-lg-3 col-md-6">
             <div class="card info-card sales-card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Users</h5>
+                    <h5 class="card-title">Total Admin</h5>
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-people"></i>
-                        </div>
+                            <i class="bi bi-person-badge"></i> </div>
                         <div class="ps-3">
-                            <h6>0</h6>
+                            <h6><?= $data['total_admin'] ?></h6>
                         </div>
                     </div>
                 </div>
@@ -39,15 +38,12 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <div class="card info-card revenue-card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Services</h5>
-                    <div class="d-flex align-items-center">
+            <div class="card info-card revenue-card"> <div class="card-body">
+                    <h5 class="card-title">Total Fasilitas</h5> <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-briefcase"></i>
-                        </div>
+                            <i class="bi bi-hdd-network"></i> </div>
                         <div class="ps-3">
-                            <h6>0</h6>
+                            <h6><?= $data['total_fasilitas'] ?></h6>
                         </div>
                     </div>
                 </div>
@@ -55,15 +51,12 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <div class="card info-card customers-card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Portfolio</h5>
-                    <div class="d-flex align-items-center">
+            <div class="card info-card customers-card"> <div class="card-body">
+                    <h5 class="card-title">Total Galeri</h5> <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-image"></i>
-                        </div>
+                            <i class="bi bi-images"></i> </div>
                         <div class="ps-3">
-                            <h6>0</h6>
+                            <h6><?= $data['total_galeri'] ?></h6>
                         </div>
                     </div>
                 </div>
@@ -71,15 +64,12 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <div class="card info-card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Team</h5>
-                    <div class="d-flex align-items-center">
+            <div class="card info-card customers-card"> <div class="card-body">
+                    <h5 class="card-title">Anggota Lab</h5> <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-person-badge"></i>
-                        </div>
+                            <i class="bi bi-people-fill"></i> </div>
                         <div class="ps-3">
-                            <h6>0</h6>
+                            <h6><?= $data['total_anggota'] ?></h6>
                         </div>
                     </div>
                 </div>

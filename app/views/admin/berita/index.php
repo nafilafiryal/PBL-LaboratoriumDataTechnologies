@@ -25,10 +25,12 @@
                                 <img src="<?= BASE_URL; ?>assets/img/berita/<?= $b['gambar']; ?>" width="80" class="rounded">
                             </td>
                             <td><?= $b['judul']; ?></td>
-                            <td><?= $b['tanggal_publikasi']; ?></td>
                             <td>
-                                <a href="<?= BASE_URL; ?>admin/editBerita/<?= $b['id_berita']; ?>" class="btn btn-sm btn-warning text-white"><i class="bi bi-pencil"></i></a>
-                                <a href="<?= BASE_URL; ?>admin/hapusBerita/<?= $b['id_berita']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus berita ini?')"><i class="bi bi-trash"></i></a>
+                                <?= date('d M Y', strtotime($b['tanggal_publish'] ?? $b['created_at'])) ?>
+                            </td>
+                            <td>
+                                <a href="<?= BASE_URL; ?>admin/editBerita/<?= $b['id']; ?>" class="btn btn-sm btn-warning text-white"><i class="bi bi-pencil"></i></a>
+                                <a href="<?= BASE_URL; ?>admin/hapusBerita/<?= $b['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus?')"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

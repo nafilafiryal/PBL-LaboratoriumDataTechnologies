@@ -3,15 +3,23 @@
 class AdminController extends Controller {
 
     public function __construct() {
-        // Cek apakah user sudah login
         if (!Session::get('user_id')) {
             header('Location: ' . BASE_URL . 'auth/login');
             exit;
         }
     }
 
-    public function index() {
+public function index() {
         $data['title'] = 'Dashboard Admin';
+
+        $data['total_admin'] = $this->model('User')->countAdmins();
+
+        $data['total_fasilitas'] = $this->model('FasilitasModel')->countAll();
+
+        $data['total_galeri'] = $this->model('GaleriModel')->countAll();
+
+        $data['total_anggota'] = $this->model('TeamModel')->countAll(); 
+
         $this->view('admin/template/header', $data);
         $this->view('admin/template/home', $data);
         $this->view('admin/template/footer');
@@ -35,7 +43,6 @@ class AdminController extends Controller {
             header('Location: ' . BASE_URL . 'admin/profil');
             exit;
         } else {
-            // Jika tidak ada perubahan
             Session::setFlash('info', 'Tidak ada data yang diubah.');
             header('Location: ' . BASE_URL . 'admin/profil');
             exit;
@@ -65,7 +72,7 @@ class AdminController extends Controller {
     public function simpanBerita() {
         $namaGambar = $this->uploadGambar();
         if (!$namaGambar) {
-            return false; // Error handled inside uploadGambar
+            return false; 
         }
         
         $_POST['gambar'] = $namaGambar;
@@ -129,21 +136,18 @@ class AdminController extends Controller {
             $confirm_password = $_POST['confirm_password'];
             $user_id = Session::get('user_id');
 
-            // 1. Validasi Input Kosong
             if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
                 Session::setFlash('danger', 'Semua kolom harus diisi!');
                 header('Location: ' . BASE_URL . 'admin/changePassword');
                 exit;
             }
 
-            // 2. Cek Password Baru sama dengan Konfirmasi
             if ($new_password !== $confirm_password) {
                 Session::setFlash('danger', 'Password baru dan konfirmasi tidak cocok!');
                 header('Location: ' . BASE_URL . 'admin/changePassword');
                 exit;
             }
 
-            // 3. Ambil Data User untuk Cek Password Lama
             $userModel = $this->model('User');
             $currentUser = $userModel->getUserById($user_id);
 
@@ -153,7 +157,6 @@ class AdminController extends Controller {
                 exit;
             }
 
-            // 4. Update Password
             if ($userModel->changePassword($user_id, $new_password)) {
                 Session::setFlash('success', 'Password berhasil diubah!');
                 header('Location: ' . BASE_URL . 'admin/changePassword');
@@ -164,7 +167,6 @@ class AdminController extends Controller {
         }
     }
 
-    // Helper Upload Gambar
     private function uploadGambar() {
         $namaFile = $_FILES['gambar']['name'];
         $ukuranFile = $_FILES['gambar']['size'];
@@ -191,5 +193,161 @@ class AdminController extends Controller {
         move_uploaded_file($tmpName, 'assets/img/berita/' . $namaFileBaru);
 
         return $namaFileBaru;
+    }
+
+    public function fasilitas() {
+        $data['title'] = 'Manajemen Fasilitas';
+        $data['fasilitas'] = $this->model('FasilitasModel')->getAllFasilitas();
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/fasilitas/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function tambahFasilitas() {
+        $data['title'] = 'Tambah Fasilitas';
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/fasilitas/create', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function simpanFasilitas() {
+        if ($this->model('FasilitasModel')->tambahFasilitas($_POST)) {
+            Session::setFlash('success', 'Fasilitas berhasil ditambahkan!');
+            header('Location: ' . BASE_URL . 'admin/fasilitas');
+            exit;
+        }
+    }
+
+    public function editFasilitas($id) {
+        $data['title'] = 'Edit Fasilitas';
+        $data['fasilitas'] = $this->model('FasilitasModel')->getFasilitasById($id);
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/fasilitas/edit', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updateFasilitas() {
+        if ($this->model('FasilitasModel')->updateFasilitas($_POST)) {
+            Session::setFlash('success', 'Fasilitas berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/fasilitas');
+            exit;
+        }
+    }
+
+    public function hapusFasilitas($id) {
+        if ($this->model('FasilitasModel')->hapusFasilitas($id)) {
+            Session::setFlash('success', 'Fasilitas berhasil dihapus!');
+            header('Location: ' . BASE_URL . 'admin/fasilitas');
+            exit;
+        }
+    }
+
+    // ==========================================================
+    // MODULE: ANGGOTA LAB (TEAM)
+    // ==========================================================
+    public function team() {
+        $data['title'] = 'Manajemen Anggota Lab';
+        $data['team'] = $this->model('TeamModel')->getAllTeam();
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/team/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function tambahTeam() {
+        $data['title'] = 'Tambah Anggota Lab';
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/team/create', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function simpanTeam() {
+        if ($this->model('TeamModel')->tambahTeam($_POST)) {
+            Session::setFlash('success', 'Anggota berhasil ditambahkan!');
+            header('Location: ' . BASE_URL . 'admin/team');
+            exit;
+        }
+    }
+
+    public function editTeam($id) {
+        $data['title'] = 'Edit Anggota Lab';
+        $data['member'] = $this->model('TeamModel')->getTeamById($id);
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/team/edit', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updateTeam() {
+        if ($this->model('TeamModel')->updateTeam($_POST)) {
+            Session::setFlash('success', 'Data anggota berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/team');
+            exit;
+        }
+    }
+
+    public function hapusTeam($id) {
+        if ($this->model('TeamModel')->hapusTeam($id)) {
+            Session::setFlash('success', 'Anggota berhasil dihapus!');
+            header('Location: ' . BASE_URL . 'admin/team');
+            exit;
+        }
+    }
+
+    // ==========================================================
+    // MODULE: PUBLIKASI JURNAL
+    // ==========================================================
+    public function publikasi() {
+        $data['title'] = 'Manajemen Publikasi';
+        $data['publikasi'] = $this->model('PublikasiModel')->getAllPublikasi();
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/publikasi/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function tambahPublikasi() {
+        $data['title'] = 'Tambah Publikasi';
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/publikasi/create', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function simpanPublikasi() {
+        if ($this->model('PublikasiModel')->tambahPublikasi($_POST)) {
+            Session::setFlash('success', 'Publikasi berhasil ditambahkan!');
+            header('Location: ' . BASE_URL . 'admin/publikasi');
+            exit;
+        }
+    }
+
+    public function editPublikasi($id) {
+        $data['title'] = 'Edit Publikasi';
+        $data['p'] = $this->model('PublikasiModel')->getPublikasiById($id);
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/publikasi/edit', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updatePublikasi() {
+        if ($this->model('PublikasiModel')->updatePublikasi($_POST)) {
+            Session::setFlash('success', 'Publikasi berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/publikasi');
+            exit;
+        }
+    }
+
+    public function hapusPublikasi($id) {
+        if ($this->model('PublikasiModel')->hapusPublikasi($id)) {
+            Session::setFlash('success', 'Publikasi berhasil dihapus!');
+            header('Location: ' . BASE_URL . 'admin/publikasi');
+            exit;
+        }
     }
 }

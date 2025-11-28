@@ -7,6 +7,7 @@ require_once '../config/database.php';
 
 // Load core manually
 require_once '../core/Session.php';
+require_once '../core/Database.php'; // <--- PASTIKAN BARIS INI ADA!
 require_once '../core/Controller.php';
 require_once '../core/Model.php';
 require_once '../core/Middleware.php';
@@ -30,10 +31,3 @@ spl_autoload_register(function($class) {
 
 // Start routing
 $router = new Router();
-// ```
-
-// ---
-
-// ## **Refresh browser dan coba lagi:**
-// ```
-// http://localhost/PBL-LaboratoriumDataTechnologies/public/

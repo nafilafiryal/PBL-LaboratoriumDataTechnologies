@@ -1,7 +1,7 @@
 <?php
 
 class BeritaModel {
-    private $table = 'berita';
+    private $table = 'news';
     private $db;
 
     public function __construct() {
@@ -9,62 +9,63 @@ class BeritaModel {
     }
 
     public function getAllBerita() {
-        $this->db->query('SELECT * FROM ' . $this->table . ' ORDER BY created_at DESC');
-        return $this->db->resultSet();
+        $sql = "SELECT * FROM " . $this->table . " ORDER BY created_at DESC";
+        $result = Database::query($sql);
+
+        $data = [];
+        while ($row = Database::fetchAssoc($result)) {
+            $data[] = $row;
+        }
+        return $data;
     }
 
     public function getBeritaById($id) {
-        $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id_berita = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->single();
+        $id = (int)$id; 
+        $sql = "SELECT * FROM " . $this->table . " WHERE id = $id";
+        $result = Database::query($sql);
+        return Database::fetchAssoc($result);
     }
 
     public function tambahBerita($data) {
+        $judul = Database::escape($data['judul']);
+        $slug = $this->slugify($data['judul']);
+        $isi = Database::escape($data['konten']);
+        $gambar = Database::escape($data['gambar']);
+        $tanggal = date('Y-m-d H:i:s');
+
         $query = "INSERT INTO " . $this->table . " 
-                  (judul, slug, konten, gambar, tanggal_publikasi) 
-                  VALUES (:judul, :slug, :konten, :gambar, :tanggal)";
+                  (judul, slug, isi, gambar, tanggal_publish, created_at) 
+                  VALUES ('$judul', '$slug', '$isi', '$gambar', '$tanggal', NOW())";
         
-        $this->db->query($query);
-        $this->db->bind(':judul', $data['judul']);
-        $this->db->bind(':slug', $this->slugify($data['judul']));
-        $this->db->bind(':konten', $data['konten']);
-        $this->db->bind(':gambar', $data['gambar']);
-        $this->db->bind(':tanggal', date('Y-m-d')); // Set tanggal hari ini
-        
-        return $this->db->execute();
+        return Database::query($query);
     }
 
     public function updateBerita($data) {
+        $id = (int)$data['id_berita'];
+        $judul = Database::escape($data['judul']);
+        $isi = Database::escape($data['konten']);
+        
         $query = "UPDATE " . $this->table . " SET 
-                  judul = :judul, 
-                  konten = :konten";
-        
-        
-        if (!empty($data['gambar'])) {
-            $query .= ", gambar = :gambar";
-        }
-        
-        $query .= " WHERE id_berita = :id";
+                  judul = '$judul', 
+                  isi = '$isi', 
+                  updated_at = NOW()";
 
-        $this->db->query($query);
-        $this->db->bind(':id', $data['id_berita']);
-        $this->db->bind(':judul', $data['judul']);
-        $this->db->bind(':konten', $data['konten']);
-        
         if (!empty($data['gambar'])) {
-            $this->db->bind(':gambar', $data['gambar']);
+            $gambar = Database::escape($data['gambar']);
+            $query .= ", gambar = '$gambar'";
         }
         
-        return $this->db->execute();
+        $query .= " WHERE id = $id";
+
+        return Database::query($query);
     }
 
     public function hapusBerita($id) {
-        $this->db->query('DELETE FROM ' . $this->table . ' WHERE id_berita = :id');
-        $this->db->bind(':id', $id);
-        return $this->db->execute();
+        $id = (int)$id;
+        $query = "DELETE FROM " . $this->table . " WHERE id = $id";
+        return Database::query($query);
     }
 
-    // Helper untuk membuat URL slug
     private function slugify($text) {
         return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $text)));
     }
