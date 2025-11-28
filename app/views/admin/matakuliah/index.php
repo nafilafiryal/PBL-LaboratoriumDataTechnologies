@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Manajemen Mata Kuliah</h3>
-        <a href="<?= BASE_URL ?>admin/tambahMatkul" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Matkul</a>
+        <h3>Daftar Mata Kuliah Terkait</h3>
+        <a href="<?= BASE_URL ?>admin/tambahMatkul" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Data</a>
     </div>
 
     <div class="card shadow-sm">
@@ -11,8 +11,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
-                            <th>Nama Mata Kuliah</th>
-                            <th>Deskripsi</th>
+                            <th>Mata Kuliah Terkait</th> <th>Deskripsi / Kompetensi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
