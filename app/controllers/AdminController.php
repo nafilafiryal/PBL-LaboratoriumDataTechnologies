@@ -266,6 +266,14 @@ public function index() {
     }
 
     public function simpanTeam() {
+        $namaGambar = $this->uploadTeamImage();
+
+        if ($namaGambar === false) {
+            return; 
+        }
+
+        $_POST['gambar'] = $namaGambar;
+
         if ($this->model('TeamModel')->tambahTeam($_POST)) {
             Session::setFlash('success', 'Anggota berhasil ditambahkan!');
             header('Location: ' . BASE_URL . 'admin/team');
@@ -283,6 +291,17 @@ public function index() {
     }
 
     public function updateTeam() {
+        if ($_FILES['gambar']['error'] === 4) {
+            $_POST['gambar'] = ''; 
+        } else {
+            $namaGambar = $this->uploadTeamImage();
+            if ($namaGambar === false) {
+                return;
+            }
+            $_POST['gambar'] = $namaGambar;
+            
+        }
+
         if ($this->model('TeamModel')->updateTeam($_POST)) {
             Session::setFlash('success', 'Data anggota berhasil diperbarui!');
             header('Location: ' . BASE_URL . 'admin/team');
@@ -291,11 +310,53 @@ public function index() {
     }
 
     public function hapusTeam($id) {
+        $member = $this->model('TeamModel')->getTeamById($id);
+        
+        if ($member['gambar'] != 'default.jpg' && !empty($member['gambar'])) {
+            $filePath = 'assets/img/team/' . $member['gambar'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
         if ($this->model('TeamModel')->hapusTeam($id)) {
             Session::setFlash('success', 'Anggota berhasil dihapus!');
             header('Location: ' . BASE_URL . 'admin/team');
             exit;
         }
+    }
+
+    private function uploadTeamImage() {
+        $namaFile   = $_FILES['gambar']['name'];
+        $ukuranFile = $_FILES['gambar']['size'];
+        $error      = $_FILES['gambar']['error'];
+        $tmpName    = $_FILES['gambar']['tmp_name'];
+
+        if ($error === 4) {
+            return 'default.jpg'; 
+        }
+
+        $ekstensiValid = ['jpg', 'jpeg', 'png'];
+        $ekstensiGambar = explode('.', $namaFile);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+        if (!in_array($ekstensiGambar, $ekstensiValid)) {
+            Session::setFlash('danger', 'Yang anda upload bukan gambar!');
+            echo "<script>history.back()</script>"; 
+            return false;
+        }
+
+        if ($ukuranFile > 2000000) {
+            Session::setFlash('danger', 'Ukuran gambar terlalu besar (Max 2MB)!');
+            echo "<script>history.back()</script>";
+            return false;
+        }
+
+        $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
+
+        move_uploaded_file($tmpName, 'assets/img/team/' . $namaFileBaru);
+
+        return $namaFileBaru;
     }
 
     // ==========================================================
