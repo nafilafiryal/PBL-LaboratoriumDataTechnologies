@@ -403,4 +403,121 @@ public function index() {
             exit;
         }
     }
+
+    // ==========================================================
+    // MODULE: GALERI
+    // ==========================================================
+    public function galeri() {
+        $data['title'] = 'Manajemen Galeri';
+        $data['galeri'] = $this->model('GaleriModel')->getAllGaleri();
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/galeri/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function tambahGaleri() {
+        $data['title'] = 'Tambah Galeri';
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/galeri/create', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function simpanGaleri() {
+        $namaFile = $this->uploadGaleriImage();
+        if (!$namaFile) {
+            return false; 
+        }
+
+        $_POST['file_path'] = $namaFile;
+
+        if ($this->model('GaleriModel')->tambahGaleri($_POST)) {
+            Session::setFlash('success', 'Foto berhasil ditambahkan ke galeri!');
+            header('Location: ' . BASE_URL . 'admin/galeri');
+            exit;
+        }
+    }
+
+    public function editGaleri($id) {
+        $data['title'] = 'Edit Galeri';
+        $data['g'] = $this->model('GaleriModel')->getGaleriById($id);
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/galeri/edit', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updateGaleri() {
+        $namaFile = $_FILES['gambar']['name'];
+        
+        if ($namaFile != '') {
+            $gambarBaru = $this->uploadGaleriImage();
+            $_POST['file_path'] = $gambarBaru;
+        } else {
+            $_POST['file_path'] = ''; 
+        }
+
+        if ($this->model('GaleriModel')->updateGaleri($_POST)) {
+            Session::setFlash('success', 'Galeri berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/galeri');
+            exit;
+        }
+    }
+
+    public function hapusGaleri($id) {
+        $galeri = $this->model('GaleriModel')->getGaleriById($id);
+        $filePath = 'assets/img/gallery/' . $galeri['file_path'];
+        
+        if (file_exists($filePath) && !empty($galeri['file_path'])) {
+            unlink($filePath); 
+        }
+
+        if ($this->model('GaleriModel')->hapusGaleri($id)) {
+            Session::setFlash('success', 'Foto berhasil dihapus!');
+            header('Location: ' . BASE_URL . 'admin/galeri');
+            exit;
+        }
+    }
+
+    private function uploadGaleriImage() {
+        $namaFile   = $_FILES['gambar']['name'];
+        $ukuranFile = $_FILES['gambar']['size'];
+        $error      = $_FILES['gambar']['error'];
+        $tmpName    = $_FILES['gambar']['tmp_name'];
+
+        if ($error === 4) {
+            Session::setFlash('danger', 'Pilih gambar terlebih dahulu!');
+            header('Location: ' . BASE_URL . 'admin/tambahGaleri');
+            exit;
+        }
+
+        $ekstensiValid = ['jpg', 'jpeg', 'png'];
+        $ekstensiGambar = explode('.', $namaFile);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+        if (!in_array($ekstensiGambar, $ekstensiValid)) {
+            Session::setFlash('danger', 'Yang anda upload bukan gambar valid (jpg/png)!');
+            header('Location: ' . BASE_URL . 'admin/tambahGaleri');
+            exit;
+        }
+
+        if ($ukuranFile > 2000000) {
+            Session::setFlash('danger', 'Ukuran gambar terlalu besar (Max 2MB)!');
+            header('Location: ' . BASE_URL . 'admin/tambahGaleri');
+            exit;
+        }
+
+        $namaFileBaru = uniqid();
+        $namaFileBaru .= '.';
+        $namaFileBaru .= $ekstensiGambar;
+
+        if (!file_exists('assets/img/gallery')) {
+            mkdir('assets/img/gallery', 0777, true);
+        }
+
+        move_uploaded_file($tmpName, 'assets/img/gallery/' . $namaFileBaru);
+
+        return $namaFileBaru;
+    }
 }
