@@ -11,10 +11,10 @@
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
+                            <th>Foto</th>
                             <th>Nama Lengkap</th>
-                            <th>NIP</th>
                             <th>Posisi</th>
-                            <th>Kontak (Email)</th>
+                            <th>Kontak</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -22,11 +22,17 @@
                         <?php $no = 1; foreach ($data['team'] as $m) : ?>
                         <tr>
                             <td><?= $no++; ?></td>
-                            <td><?= $m['nama']; ?></td>
-                            <td><?= $m['nip'] ?? '-'; ?></td>
                             <td>
-                                <span class="badge bg-info text-dark"><?= $m['posisi']; ?></span>
+                                <img src="<?= BASE_URL; ?>assets/img/team/<?= $m['gambar'] ?? 'default.jpg'; ?>" 
+                                     width="50" height="50" 
+                                     class="rounded-circle" 
+                                     style="object-fit: cover; border: 2px solid #ddd;">
                             </td>
+                            <td>
+                                <strong><?= $m['nama']; ?></strong><br>
+                                <small class="text-muted"><?= $m['nip'] ?? '-'; ?></small>
+                            </td>
+                            <td><span class="badge bg-info text-dark"><?= $m['posisi']; ?></span></td>
                             <td><?= $m['kontak']; ?></td>
                             <td>
                                 <a href="<?= BASE_URL; ?>admin/editTeam/<?= $m['id']; ?>" class="btn btn-sm btn-warning text-white"><i class="bi bi-pencil"></i></a>

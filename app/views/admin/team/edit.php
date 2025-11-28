@@ -4,7 +4,7 @@
             <h4 class="mb-0">Edit Anggota Lab</h4>
         </div>
         <div class="card-body mt-3">
-            <form action="<?= BASE_URL; ?>admin/updateTeam" method="POST">
+            <form action="<?= BASE_URL; ?>admin/updateTeam" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= $data['member']['id']; ?>">
                 
                 <div class="mb-3">
@@ -33,6 +33,17 @@
                 <div class="mb-3">
                     <label class="form-label">Kontak (Email)</label>
                     <input type="email" class="form-control" name="kontak" value="<?= $data['member']['kontak']; ?>">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Foto Profil</label>
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <img src="<?= BASE_URL; ?>assets/img/team/<?= $data['member']['gambar'] ?? 'default.jpg'; ?>" 
+                             width="80" height="80" class="rounded-circle border">
+                        <span class="text-muted small">Foto saat ini</span>
+                    </div>
+                    <input type="file" class="form-control" name="gambar">
+                    <div class="form-text">Biarkan kosong jika tidak ingin mengganti foto.</div>
                 </div>
 
                 <a href="<?= BASE_URL; ?>admin/team" class="btn btn-secondary">Kembali</a>
