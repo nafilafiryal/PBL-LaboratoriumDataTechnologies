@@ -298,6 +298,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link <?= (isset($data['title']) && strpos($data['title'], 'Galeri') !== false) ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin/galeri">
+                <i class="bi bi-images"></i>
+                <span>Galeri</span>
+            </a>
+        </li>
+
         <li class="nav-heading">Settings</li>
 
         <li class="nav-item">
