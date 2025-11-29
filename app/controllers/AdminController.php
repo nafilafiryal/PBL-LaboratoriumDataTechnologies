@@ -581,4 +581,33 @@ public function index() {
 
         return $namaFileBaru;
     }
+
+    // ==========================================================
+    // MODULE: MY PROFILE (User Pribadi)
+    // ==========================================================
+    public function myProfile() {
+        $data['title'] = 'Profil Saya';
+        $data['user'] = $this->model('User')->getUserById(Session::get('user_id'));
+        
+        $this->view('admin/template/header', $data);
+        $this->view('admin/myprofile/index', $data);
+        $this->view('admin/template/footer');
+    }
+
+    public function updateMyProfile() {
+        $_POST['id'] = Session::get('user_id');
+        
+        if ($this->model('User')->updateProfile($_POST)) {
+            Session::set('nama', $_POST['nama']);
+            Session::set('username', $_POST['username']);
+            
+            Session::setFlash('success', 'Profil Anda berhasil diperbarui!');
+            header('Location: ' . BASE_URL . 'admin/myProfile');
+            exit;
+        } else {
+            Session::setFlash('danger', 'Gagal memperbarui profil.');
+            header('Location: ' . BASE_URL . 'admin/myProfile');
+            exit;
+        }
+    }
 }
