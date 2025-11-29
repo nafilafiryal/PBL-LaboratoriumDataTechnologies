@@ -7,8 +7,15 @@
                 </div>
                 <div class="card-body">
                     
-                    <?php Flasher::flash(); ?>
-
+                    <?php 
+                    $flash = Session::getFlash();
+                    if ($flash): 
+                    ?>
+                        <div class="alert alert-<?= ($flash['type'] == 'success') ? 'success' : 'danger' ?> alert-dismissible fade show" role="alert">
+                            <?= $flash['message'] ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
                     <form action="<?= BASE_URL ?>admin/updatePassword" method="POST">
                         <div class="mb-3">
                             <label class="form-label">Password Lama</label>
