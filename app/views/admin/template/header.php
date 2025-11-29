@@ -167,11 +167,13 @@
             color: #4154f1;
         }
 
-        /* --- MAIN CONTENT --- */
+        /* --- MAIN CONTENT & FOOTER FIX --- */
         #main {
             margin-top: 60px;
             padding: 20px 30px;
             transition: all 0.3s;
+            /* PERBAIKAN: Memaksa tinggi konten agar footer terdorong ke bawah */
+            min-height: calc(100vh - 120px); 
         }
 
         @media (min-width: 1200px) {
@@ -187,6 +189,16 @@
             .toggle-sidebar .sidebar {
                 left: 0;
             }
+        }
+        
+        /* Tambahan Style Footer agar rapi */
+        #footer {
+            padding: 20px 0;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-top: 1px solid #cddfff;
+            text-align: center;
+            background: #f6f9ff;
         }
     </style>
 </head>
@@ -222,7 +234,7 @@
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>admin/profil">
+                        <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>admin/myProfile">
                             <i class="bi bi-person"></i>
                             <span>My Profile</span>
                         </a>
@@ -294,7 +306,8 @@
         <li class="nav-item">
             <a class="nav-link <?= (isset($data['title']) && strpos($data['title'], 'Mata Kuliah') !== false) ? '' : 'collapsed' ?>" href="<?= BASE_URL ?>admin/matakuliah">
                 <i class="bi bi-book"></i>
-                <span>Mata Kuliah Terkait</span> </a>
+                <span>Mata Kuliah Terkait</span>
+            </a>
         </li>
 
         <li class="nav-item">

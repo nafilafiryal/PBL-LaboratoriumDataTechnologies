@@ -55,6 +55,23 @@ class User extends Model {
         return null;
     }
 
+    public function updateProfile($data) {
+        $id = (int)$data['id'];
+        $nama = Database::escape($data['nama']);
+        $username = Database::escape($data['username']);
+        $email = Database::escape($data['email']);
+
+        $query = "UPDATE users SET 
+                  nama_lengkap = '$nama', 
+                  username = '$username', 
+                  email = '$email',
+                  updated_at = NOW() 
+                  WHERE iduser = $id";
+        
+        return Database::query($query);
+    }
+    
+
     public function changePassword($userId, $newPassword) {
         $userId = (int) $userId;
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
